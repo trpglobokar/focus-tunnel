@@ -1,6 +1,6 @@
 import * as CSS from 'csstype';
 
-export const focusTunnelBreakCountdownStyles: CSS.Properties = {
+export const breakCountdownStyles: CSS.Properties = {
   position: 'fixed',
   bottom: '8px',
   right: '8px',

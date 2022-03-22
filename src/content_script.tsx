@@ -11,12 +11,8 @@ const siteName = window.location.hostname;
 
 if(siteName in blockedSites){
   let focusTunnelRoot = document.createElement("div");
-  focusTunnelRoot.setAttribute('id', 'focus-tunnel-root');
+  focusTunnelRoot.setAttribute('id', 'focus-tunnel');
   document.getElementsByTagName('html')[0].prepend(focusTunnelRoot);
-
-  let focusTunnelCountdownRoot = document.createElement("div");
-  focusTunnelCountdownRoot.setAttribute('id', 'focus-tunnel-countdown-root');
-  document.getElementsByTagName('html')[0].prepend(focusTunnelCountdownRoot);
 
   //const { checkIsBreakValid } = renderFocusTunnel();
   renderFocusTunnel();

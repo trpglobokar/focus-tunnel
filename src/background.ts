@@ -1,5 +1,6 @@
-let breakEndTime: number = 0;
-let nextValidBreakTime: number = 0;
+let currentTime: number = new Date().getTime();
+let breakEndTime: number = currentTime;
+let nextValidBreakTime: number = currentTime;
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ breakEndTime, nextValidBreakTime });

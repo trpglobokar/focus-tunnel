@@ -1,11 +1,8 @@
 import { formatTimeToString } from "./formatTimeToString";
-import { blockSite } from "./blockedSites";
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { FC, useEffect, useState } from "react";
+import { breakCountdownStyles } from "./focusTunnelBreakCountdown.styles";
 
-import { focusTunnelBreakCountdownStyles } from "./focusTunnelBreakCountdown.styles";
-
-export const createNewBreakCountdown = () => {
+export const startNewBreakCountdown = () => {
   const BREAK_LENGTH_IN_MINUTES = 5;
   const NEXT_BREAK_TIME_IN_MINUTES = 60;
 
@@ -17,43 +14,44 @@ export const createNewBreakCountdown = () => {
     breakEndTime,
     nextValidBreakTime
   });
-  renderBreakCountdown();
 };
 
-export const BreakCountdown = () => {
+// RUNS EVERY SECOND, RUNS THE "COUNTDOWN"
+const updateBreakCountdown = (interval: any, setTimeLeftInSeconds: any) => {
+  chrome.storage.sync.get("breakEndTime", ({ breakEndTime }) => {
+    let currentTime: number = new Date().getTime();
+    let currentBreakTimeLeftInSeconds = Math.floor((breakEndTime - currentTime) / 1000);
+
+    if (currentBreakTimeLeftInSeconds <= 0) {
+      setTimeLeftInSeconds(0);
+      clearInterval(interval);
+      //TODO: bubble up "break end" to FocusTunnel
+    } else {
+      const newBreakTimeLeftInSeconds = currentBreakTimeLeftInSeconds - 5;
+      setTimeLeftInSeconds(newBreakTimeLeftInSeconds);
+    }
+  });
+  return;
+};
+
+interface BreakCountdownProps {
+  readonly isActive: boolean;
+}
+export const BreakCountdown: FC<BreakCountdownProps> = ({ isActive }) => {
   const [timeLeftInSeconds, setTimeLeftInSeconds] = useState(0);
 
   useEffect(() => {
-    chrome.storage.sync.get("breakEndTime", ({ breakEndTime }) => {
-      let currentTime: number = new Date().getTime();
-      setTimeLeftInSeconds((breakEndTime - currentTime) / 1000);
-    });
-  }, [setTimeLeftInSeconds]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
-      const newTimeLeftInSeconds = timeLeftInSeconds - 5;
-      if (newTimeLeftInSeconds <= 0) {
-        clearInterval(interval);
-        blockSite();
-        //TODO: destroy this component?
-      } else {
-        setTimeLeftInSeconds(newTimeLeftInSeconds);
-      }
-    }, 5000);
+      updateBreakCountdown(interval, setTimeLeftInSeconds)
+    }, 1000);
     return () => clearInterval(interval);
-  }, [timeLeftInSeconds]);
+  }, [isActive, setTimeLeftInSeconds]);
 
-  return (
-    <div style={focusTunnelBreakCountdownStyles}>
-      <div>{formatTimeToString(timeLeftInSeconds)}</div>
-    </div>
-  );
+  return isActive ?
+    (
+      <div style={breakCountdownStyles}>
+        <div>{formatTimeToString(timeLeftInSeconds)}</div>
+      </div>
+    ) :
+    null;
 };
-
-export const renderBreakCountdown = () => ReactDOM.render(
-  <React.StrictMode>
-    <BreakCountdown />
-  </React.StrictMode>,
-  document.getElementById('focus-tunnel-countdown-root')
-);
