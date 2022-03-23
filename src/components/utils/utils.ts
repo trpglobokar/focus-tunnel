@@ -1,13 +1,5 @@
 import { blockedSites } from "./blockedSiteList";
 
-export const blockSite = () => {
-  document.getElementsByTagName('body')[0].style.display = 'none';
-};
-
-export const unblockSite = () => {
-  document.getElementsByTagName('body')[0].style.display = 'initial';
-};
-
 export const isFocusHour = (currentDate: Date) => {
   const siteName = window.location.hostname;
   const currentHour = currentDate.getHours();
