@@ -1,6 +1,12 @@
 import { blockedSites } from "./blockedSiteList";
+import { SITE_STATUS } from "./types";
 
-export const isFocusHour = (currentDate: Date) => {
+type GetIsBlockerVisible = (blockedStatus: SITE_STATUS) => boolean;
+export const getIsBlockerVisible:GetIsBlockerVisible = (blockedStatus) =>
+  [SITE_STATUS.FocusBlocked, SITE_STATUS.StretchBlocked].includes(blockedStatus);
+
+type GetIsFocusHour = (currentDate: Date) => boolean;
+export const getIsFocusHour:GetIsFocusHour = (currentDate) => {
   const siteName = window.location.hostname;
   const currentHour = currentDate.getHours();
   const currentDay = currentDate.getDay();
@@ -11,7 +17,8 @@ export const isFocusHour = (currentDate: Date) => {
   return blockedSites[siteName].focusHours[currentDay].includes(currentHour)
 };
 
-export const isStretchBreak = (currentDate: Date) => {
+type GetIsStretchBreak = (currentDate: Date) => boolean;
+export const getIsStretchBreak:GetIsStretchBreak = (currentDate) => {
   const siteName = window.location.hostname;
 
   if(!blockedSites[siteName]){

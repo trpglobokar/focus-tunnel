@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { startNewBreakCountdown } from "./utils/actions";
 import { updateSiteBlockStatus } from "./utils/intervals";
 import { SITE_STATUS } from "./utils/types";
+import { getIsBlockerVisible } from "./utils/utils";
 
 import { BreakCountdown } from "./BreakCountdown";
 import { getFocusTunnelStyles } from "./FocusTunnel.styles";
@@ -12,7 +13,7 @@ export const FocusTunnel = () => {
   const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.UnBlocked);
   const [isBreakAllowed, setIsBreakAllowed] = useState(true);
 
-  const isBlockerVisible = [SITE_STATUS.FocusBlocked, SITE_STATUS.StretchBlocked].includes(blockedStatus);
+  const isBlockerVisible = getIsBlockerVisible(blockedStatus);
   const focusTunnelStyles = getFocusTunnelStyles(isBlockerVisible);
 
   //INTIAL STATUS CHECK + SETS TIMED CHECKS

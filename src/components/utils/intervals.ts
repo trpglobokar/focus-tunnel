@@ -1,6 +1,6 @@
 import { blockSite, unblockSite } from "./actions";
 import { SITE_STATUS } from "./types";
-import { isFocusHour, isStretchBreak } from "./utils";
+import { getIsFocusHour, getIsStretchBreak } from "./utils";
 
 // RUNS EVERY 5 seconds, CHECKS IF SITE IS BLOCKED/UNBLOCKED
 export const updateSiteBlockStatus = (setIsBreakAllowed: any, setBlockedStatus: any) => {
@@ -13,10 +13,10 @@ export const updateSiteBlockStatus = (setIsBreakAllowed: any, setBlockedStatus: 
     if (breakEndTime - currentTime > 0){
       unblockSite();
       setBlockedStatus(SITE_STATUS.UnBlocked);
-    } else if (isFocusHour(currentDate)){
+    } else if (getIsFocusHour(currentDate)){
       blockSite();
       setBlockedStatus(SITE_STATUS.FocusBlocked);
-    } else if (isStretchBreak(currentDate)){
+    } else if (getIsStretchBreak(currentDate)){
       blockSite();
       setBlockedStatus(SITE_STATUS.StretchBlocked);
       isBreakAllowed = false;
