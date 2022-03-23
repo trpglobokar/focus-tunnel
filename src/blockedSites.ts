@@ -45,29 +45,30 @@ export const blockedSites: any = {
     focusHours: [
       [0, 1, 2],
       [23, 0, 1, 2],
-      [0, 1, 2, 12, 13],
+      [0, 1, 2, 12],
       [0, 1, 2],
       [0, 1, 2],
       [0, 1, 2],
       [0, 1, 2]
     ],
-    stretchBreakTime: 30
+    stretchBreakTime: 5,
   }
 };
 
 export const isFocusHour = (currentDate: Date) => {
   const siteName = window.location.hostname;
-
   const currentHour = currentDate.getHours();
   const currentDay = currentDate.getDay();
+
   if(!blockedSites[siteName]){
     return false;
   }
-
   return blockedSites[siteName].focusHours[currentDay].includes(currentHour)
 };
 
-export const isStretchBreak = (currentDate: Date, siteName: string) => {
+export const isStretchBreak = (currentDate: Date) => {
+  const siteName = window.location.hostname;
+
   if(!blockedSites[siteName]){
     return false;
   }

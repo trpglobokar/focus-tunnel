@@ -1,55 +1,66 @@
-import { blockSite, isFocusHour, unblockSite } from "./blockedSites";
+import { blockSite, isFocusHour, isStretchBreak, unblockSite } from "./blockedSites";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { BreakCountdown, startNewBreakCountdown } from "./focusTunnelBreakCountdown";
 
 import { focusTunnelInvisible, focusTunnelVisible } from "./focusTunnel.styles";
 
+enum SITE_STATUS {
+  FocusBlocked = "Go Back to Work",
+  StretchBlocked = "Go Stretch",
+  UnBlocked = "Suppity Duppity",
+}
+
 // RUNS EVERY 5 seconds, CHECKS IF SITE IS BLOCKED/UNBLOCKED
-const updateSiteBlockStatus = (setIsVisible: any, setIsBreakAllowed: any) => {
+const updateSiteBlockStatus = (setIsBreakAllowed: any, setBlockedStatus: any) => {
   chrome.storage.sync.get(['breakEndTime', 'nextValidBreakTime'], ({ breakEndTime, nextValidBreakTime }) => {
     let currentDate: Date = new Date();
     let currentTime = currentDate.getTime();
 
-    const isBreakAllowed = nextValidBreakTime < currentTime;
-    setIsBreakAllowed(isBreakAllowed);
+    let isBreakAllowed = nextValidBreakTime < currentTime;
 
-    //TODO: only change values if already changed? or does react handle this
     if (breakEndTime - currentTime > 0){
       unblockSite();
-      setIsVisible(false);
+      setBlockedStatus(SITE_STATUS.UnBlocked);
     } else if (isFocusHour(currentDate)){
       blockSite();
-      setIsVisible(true);
+      setBlockedStatus(SITE_STATUS.FocusBlocked);
+    } else if (isStretchBreak(currentDate)){
+      blockSite();
+      setBlockedStatus(SITE_STATUS.StretchBlocked);
+      isBreakAllowed = false;
     } else {
       unblockSite();
-      setIsVisible(false);
+      setBlockedStatus(SITE_STATUS.UnBlocked);
     }
+
+    setIsBreakAllowed(isBreakAllowed);
   });
   return;
 };
 
 export const FocusTunnel = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.UnBlocked);
   const [isBreakAllowed, setIsBreakAllowed] = useState(true);
+
+  const isBlockerVisible = [SITE_STATUS.FocusBlocked, SITE_STATUS.StretchBlocked].includes(blockedStatus);
 
   //INTIAL STATUS CHECK + SETS TIMED CHECKS
   useEffect(() => {
-    updateSiteBlockStatus(setIsVisible, setIsBreakAllowed);
+    updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus);
     const timer = setInterval(() => {
-      updateSiteBlockStatus(setIsVisible, setIsBreakAllowed);
+      updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus);
     }, 5000);
     return () => clearInterval(timer);
-  }), [setIsVisible, setIsBreakAllowed];
+  }), [setIsBreakAllowed, setBlockedStatus];
 
   //DECLARES STYLES
-  const focusTunnelStyle = isVisible ? focusTunnelVisible : focusTunnelInvisible; //TODO: install CSS packet w/ variables;
+  const focusTunnelStyle = isBlockerVisible ? focusTunnelVisible : focusTunnelInvisible; //TODO: install CSS packet w/ variables;
 
   //FUNCTION FOR TAKE-A-BREAK BUTTON
   const triggerBreak = () => {
-    unblockSite();
-    setIsVisible(false);
-    startNewBreakCountdown(); //TODO: pass through setIsVisible(?)
+    startNewBreakCountdown();
+    updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus);
   }
 
   const breakButton = isBreakAllowed ?
@@ -59,10 +70,10 @@ export const FocusTunnel = () => {
   return (
     <>
       <div style={focusTunnelStyle}>
-        <div>YAH BLOCKED</div>
+        <div>{blockedStatus}</div>
         {breakButton}
       </div>
-      <BreakCountdown isActive={!isVisible} />
+      <BreakCountdown isActive={!isBlockerVisible} />
     </>
   );
 };
