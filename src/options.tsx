@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { BlockedSite } from "./components/utils/blockedSiteList";
+import { BlockedSite } from "./utils/blockedSiteList";
 
 //TODO: allow users to customize blocked sites & times here
 

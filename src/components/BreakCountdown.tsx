@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 
-import { formatTimeToString } from "./utils/formatTimeToString";
-import { updateBreakCountdown } from "./utils/intervals";
+import { formatTimeToString } from "../utils/formatTimeToString";
+import { updateBreakCountdown } from "../utils/intervals";
 
 import { breakCountdownStyles } from "./BreakCountdown.styles";
 

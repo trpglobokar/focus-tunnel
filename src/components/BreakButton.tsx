@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/react";
 import React, { FC } from "react";
 
-import { startNewBreakCountdown } from "./utils/actions";
+import { startNewBreakCountdown } from "../utils/actions";
 
 import { breakButtonStyles } from "./BreakButton.styles";
 

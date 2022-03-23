@@ -1,7 +1,4 @@
-import {
-  BlockedSite,
-  defaultBlockedSites,
-} from "./components/utils/blockedSiteList";
+import { BlockedSite, defaultBlockedSites } from "./utils/blockedSiteList";
 
 let blockedSites: BlockedSite[] = defaultBlockedSites;
 let currentTime: number = new Date().getTime();

@@ -1,5 +1,5 @@
 import { renderFocusTunnel } from "./components/FocusTunnel";
-import { getBlockedSiteByName } from "./components/utils/utils";
+import { getBlockedSiteByName } from "./utils/utils";
 
 const siteName = window.location.hostname;
 
