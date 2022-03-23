@@ -12,7 +12,7 @@ export const getRootStyles: GetRootStyles = (isBlockerVisible) => {
     justifyContent: "center",
     color: "#fff !important",
     textAlign: "center",
-    fontFamily: "monospace !important",
+    fontFamily: "'Helvetica', 'Candara', 'Arial', sans-serif",
   };
 };
 

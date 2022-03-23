@@ -12,4 +12,5 @@ export const breakCountdownStyles: CSS.Properties = {
   minWidth: "54px",
   textAlign: "center",
   borderRadius: "4px",
+  fontFamily: "'Helvetica', 'Candara', 'Arial', sans-serif",
 };
