@@ -1,7 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
-import { blockSite, unblockSite } from "./actions";
+import { blockSiteBody } from "./actions";
 import { SITE_STATUS } from "./types";
-import { getIsFocusHour, getIsStretchBreak } from "./utils";
+import {
+  getBreakTimeLeftInSeconds,
+  getIsFocusHour,
+  getIsStretchBreak,
+} from "./utils";
 
 type UpdateSiteBlockStatus = (
   setIsBreakAllowed: Dispatch<SetStateAction<boolean>>,
@@ -18,23 +22,20 @@ export const updateSiteBlockStatus: UpdateSiteBlockStatus = (
       let currentTime = currentDate.getTime();
 
       let isBreakAllowed = nextValidBreakTime < currentTime;
+      let blockedStatus = SITE_STATUS.TotallyFree;
 
       if (breakEndTime - currentTime > 0) {
-        unblockSite();
-        setBlockedStatus(SITE_STATUS.OnBreak);
+        blockedStatus = SITE_STATUS.OnBreak;
       } else if (getIsFocusHour(currentDate)) {
-        blockSite();
-        setBlockedStatus(SITE_STATUS.FocusBlocked);
+        blockedStatus = SITE_STATUS.FocusBlocked;
       } else if (getIsStretchBreak(currentDate)) {
-        blockSite();
-        setBlockedStatus(SITE_STATUS.StretchBlocked);
+        blockedStatus = SITE_STATUS.StretchBlocked;
         isBreakAllowed = false;
-      } else {
-        unblockSite();
-        setBlockedStatus(SITE_STATUS.TotallyFree);
       }
 
+      blockSiteBody(blockedStatus);
       setIsBreakAllowed(isBreakAllowed);
+      setBlockedStatus(blockedStatus);
     }
   );
 };
@@ -48,16 +49,13 @@ export const updateBreakCountdown: UpdateBreakCountdown = (
   setTimeLeftInSeconds
 ) => {
   chrome.storage.sync.get("breakEndTime", ({ breakEndTime }) => {
-    let currentTime: number = new Date().getTime();
-    let currentBreakTimeLeftInSeconds = Math.floor(
-      (breakEndTime - currentTime) / 1000
-    );
+    const breakTimeLeftInSeconds = getBreakTimeLeftInSeconds(breakEndTime);
 
-    if (currentBreakTimeLeftInSeconds <= 0) {
+    if (breakTimeLeftInSeconds <= 0) {
       setTimeLeftInSeconds(0);
       clearInterval(interval);
     } else {
-      setTimeLeftInSeconds(currentBreakTimeLeftInSeconds);
+      setTimeLeftInSeconds(breakTimeLeftInSeconds);
     }
   });
 };

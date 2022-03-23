@@ -1,6 +1,14 @@
 import { blockedSites } from "./blockedSiteList";
 import { SITE_STATUS } from "./types";
 
+type GetBreakTimeLeftInSeconds = (breakEndTime: number) => number;
+export const getBreakTimeLeftInSeconds: GetBreakTimeLeftInSeconds = (
+  breakEndTime
+) => {
+  let currentTime: number = new Date().getTime();
+  return Math.floor((breakEndTime - currentTime) / 1000);
+};
+
 type GetIsBlockerVisible = (blockedStatus: SITE_STATUS) => boolean;
 export const getIsBlockerVisible: GetIsBlockerVisible = (blockedStatus) =>
   [SITE_STATUS.FocusBlocked, SITE_STATUS.StretchBlocked].includes(

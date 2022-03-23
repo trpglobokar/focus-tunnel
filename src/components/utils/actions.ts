@@ -1,9 +1,13 @@
-export const blockSite = () => {
-  document.getElementsByTagName("body")[0].style.display = "none";
-};
+import { SITE_STATUS } from "./types";
+import { getIsBlockerVisible } from "./utils";
 
-export const unblockSite = () => {
-  document.getElementsByTagName("body")[0].style.display = "initial";
+type BlockSiteBody = (blockedStatus: SITE_STATUS) => void;
+export const blockSiteBody: BlockSiteBody = (blockedStatus) => {
+  const isSiteBlocked = getIsBlockerVisible(blockedStatus);
+
+  document.getElementsByTagName("body")[0].style.display = isSiteBlocked
+    ? "none"
+    : "initial";
 };
 
 export const startNewBreakCountdown = () => {
