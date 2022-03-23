@@ -12,7 +12,7 @@ export const updateSiteBlockStatus = (setIsBreakAllowed: any, setBlockedStatus: 
 
     if (breakEndTime - currentTime > 0){
       unblockSite();
-      setBlockedStatus(SITE_STATUS.UnBlocked);
+      setBlockedStatus(SITE_STATUS.OnBreak);
     } else if (getIsFocusHour(currentDate)){
       blockSite();
       setBlockedStatus(SITE_STATUS.FocusBlocked);
@@ -22,7 +22,7 @@ export const updateSiteBlockStatus = (setIsBreakAllowed: any, setBlockedStatus: 
       isBreakAllowed = false;
     } else {
       unblockSite();
-      setBlockedStatus(SITE_STATUS.UnBlocked);
+      setBlockedStatus(SITE_STATUS.TotallyFree);
     }
 
     setIsBreakAllowed(isBreakAllowed);

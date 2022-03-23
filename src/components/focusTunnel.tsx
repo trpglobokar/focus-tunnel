@@ -10,7 +10,7 @@ import { BreakCountdown } from "./BreakCountdown";
 import { getFocusTunnelStyles } from "./FocusTunnel.styles";
 
 export const FocusTunnel = () => {
-  const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.UnBlocked);
+  const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.TotallyFree);
   const [isBreakAllowed, setIsBreakAllowed] = useState(true);
 
   const isBlockerVisible = getIsBlockerVisible(blockedStatus);
@@ -41,7 +41,7 @@ export const FocusTunnel = () => {
         <div>{blockedStatus}</div>
         {breakButton}
       </div>
-      <BreakCountdown isActive={!isBlockerVisible} />
+      <BreakCountdown isActive={blockedStatus == SITE_STATUS.OnBreak} />
     </>
   );
 };
