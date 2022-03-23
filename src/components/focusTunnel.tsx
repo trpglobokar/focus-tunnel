@@ -1,6 +1,6 @@
-import { blockSite, isFocusHour, isStretchBreak, unblockSite } from "./blockedSites";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { blockSite, isFocusHour, isStretchBreak, unblockSite } from "./utils/utils";
 import { BreakCountdown, startNewBreakCountdown } from "./focusTunnelBreakCountdown";
 
 import { focusTunnelInvisible, focusTunnelVisible } from "./focusTunnel.styles";

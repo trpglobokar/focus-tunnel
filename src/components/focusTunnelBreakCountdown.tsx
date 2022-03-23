@@ -1,4 +1,4 @@
-import { formatTimeToString } from "./formatTimeToString";
+import { formatTimeToString } from "./utils/formatTimeToString";
 import React, { FC, useEffect, useState } from "react";
 import { breakCountdownStyles } from "./focusTunnelBreakCountdown.styles";
 
@@ -27,8 +27,7 @@ const updateBreakCountdown = (interval: any, setTimeLeftInSeconds: any) => {
       clearInterval(interval);
       //TODO: bubble up "break end" to FocusTunnel
     } else {
-      const newBreakTimeLeftInSeconds = currentBreakTimeLeftInSeconds - 5;
-      setTimeLeftInSeconds(newBreakTimeLeftInSeconds);
+      setTimeLeftInSeconds(currentBreakTimeLeftInSeconds);
     }
   });
   return;
