@@ -6,13 +6,14 @@ import { updateSiteBlockStatus } from "./utils/intervals";
 import { SITE_STATUS } from "./utils/types";
 
 import { BreakCountdown } from "./BreakCountdown";
-import { focusTunnelInvisible, focusTunnelVisible } from "./FocusTunnel.styles";
+import { getFocusTunnelStyles } from "./FocusTunnel.styles";
 
 export const FocusTunnel = () => {
   const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.UnBlocked);
   const [isBreakAllowed, setIsBreakAllowed] = useState(true);
 
   const isBlockerVisible = [SITE_STATUS.FocusBlocked, SITE_STATUS.StretchBlocked].includes(blockedStatus);
+  const focusTunnelStyles = getFocusTunnelStyles(isBlockerVisible);
 
   //INTIAL STATUS CHECK + SETS TIMED CHECKS
   useEffect(() => {
@@ -22,10 +23,7 @@ export const FocusTunnel = () => {
     }, 5000);
     return () => clearInterval(timer);
   }), [setIsBreakAllowed, setBlockedStatus];
-
-  //DECLARES STYLES
-  const focusTunnelStyle = isBlockerVisible ? focusTunnelVisible : focusTunnelInvisible; //TODO: install CSS packet w/ variables;
-
+  
   //FUNCTION FOR TAKE-A-BREAK BUTTON
   const triggerBreak = () => {
     startNewBreakCountdown();
@@ -38,7 +36,7 @@ export const FocusTunnel = () => {
 
   return (
     <>
-      <div style={focusTunnelStyle}>
+      <div style={focusTunnelStyles}>
         <div>{blockedStatus}</div>
         {breakButton}
       </div>
