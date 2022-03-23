@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import { formatTimeToString } from "./utils/formatTimeToString";
 import { updateBreakCountdown } from "./utils/intervals";
 
-import { breakCountdownStyles } from "./focusTunnelBreakCountdown.styles";
+import { breakCountdownStyles } from "./BreakCountdown.styles";
 
 interface BreakCountdownProps {
   readonly isActive: boolean;

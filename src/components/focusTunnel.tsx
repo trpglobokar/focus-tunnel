@@ -5,8 +5,8 @@ import { startNewBreakCountdown } from "./utils/actions";
 import { updateSiteBlockStatus } from "./utils/intervals";
 import { SITE_STATUS } from "./utils/types";
 
-import { BreakCountdown } from "./focusTunnelBreakCountdown";
-import { focusTunnelInvisible, focusTunnelVisible } from "./focusTunnel.styles";
+import { BreakCountdown } from "./BreakCountdown";
+import { focusTunnelInvisible, focusTunnelVisible } from "./FocusTunnel.styles";
 
 export const FocusTunnel = () => {
   const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.UnBlocked);
