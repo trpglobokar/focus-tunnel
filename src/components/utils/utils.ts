@@ -1,4 +1,4 @@
-import { blockedSites } from "./blockedSiteList";
+import { BlockedSite, blockedSites } from "./blockedSiteList";
 import { SITE_STATUS } from "./types";
 
 type GetBreakTimeLeftInSeconds = (breakEndTime: number) => number;
@@ -18,21 +18,25 @@ export const getIsBlockerVisible: GetIsBlockerVisible = (blockedStatus) =>
 type GetIsFocusHour = (currentDate: Date) => boolean;
 export const getIsFocusHour: GetIsFocusHour = (currentDate) => {
   const siteName = window.location.hostname;
-  const currentHour = currentDate.getHours();
+  const blockedSite = getBlockedSiteByName(siteName);
   const currentDay = currentDate.getDay();
 
-  if (!blockedSites[siteName]) {
-    return false;
-  }
-  return blockedSites[siteName].focusHours[currentDay].includes(currentHour);
+  return !blockedSite
+    ? false
+    : blockedSite.focusHours[currentDay].includes(currentDate.getHours());
 };
 
 type GetIsStretchBreak = (currentDate: Date) => boolean;
 export const getIsStretchBreak: GetIsStretchBreak = (currentDate) => {
   const siteName = window.location.hostname;
+  const blockedSite = getBlockedSiteByName(siteName);
 
-  if (!blockedSites[siteName]) {
-    return false;
-  }
-  return currentDate.getMinutes() > blockedSites[siteName].stretchBreakTime;
+  return !blockedSite
+    ? false
+    : currentDate.getMinutes() > blockedSite.stretchBreakTime;
+};
+
+type GetBlockedSiteByName = (siteName: string) => BlockedSite | undefined;
+export const getBlockedSiteByName: GetBlockedSiteByName = (siteName) => {
+  return blockedSites.find((site) => site.siteName === siteName);
 };
