@@ -8,14 +8,14 @@ import { getIsBlockerVisible } from "./utils/utils";
 import { BreakButton } from "./BreakButton";
 import { BreakCountdown } from "./BreakCountdown";
 
-import { getFocusTunnelStyles } from "./FocusTunnel.styles";
+import { getRootStyles, textStyles } from "./FocusTunnel.styles";
 
 export const FocusTunnel = () => {
   const [blockedStatus, setBlockedStatus] = useState(SITE_STATUS.TotallyFree);
   const [isBreakAllowed, setIsBreakAllowed] = useState(true);
 
   const isBlockerVisible = getIsBlockerVisible(blockedStatus);
-  const focusTunnelStyles = getFocusTunnelStyles(isBlockerVisible);
+  const rootStyles = getRootStyles(isBlockerVisible);
 
   //INTIAL STATUS CHECK + SETS TIMED CHECKS
   useEffect(() => {
@@ -29,8 +29,8 @@ export const FocusTunnel = () => {
 
   return (
     <>
-      <div style={focusTunnelStyles}>
-        <div>{blockedStatus}</div>
+      <div style={rootStyles}>
+        <div style={textStyles}>{blockedStatus}</div>
         <BreakButton
           isBreakAllowed={isBreakAllowed}
           triggerUpdateSiteBlockStatus={() =>
