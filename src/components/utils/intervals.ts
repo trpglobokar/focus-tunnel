@@ -1,11 +1,15 @@
+import { Dispatch, SetStateAction } from "react";
 import { blockSite, unblockSite } from "./actions";
 import { SITE_STATUS } from "./types";
 import { getIsFocusHour, getIsStretchBreak } from "./utils";
 
-// RUNS EVERY 5 seconds, CHECKS IF SITE IS BLOCKED/UNBLOCKED
-export const updateSiteBlockStatus = (
-  setIsBreakAllowed: any,
-  setBlockedStatus: any
+type UpdateSiteBlockStatus = (
+  setIsBreakAllowed: Dispatch<SetStateAction<boolean>>,
+  setBlockedStatus: Dispatch<SetStateAction<SITE_STATUS>>
+) => void;
+export const updateSiteBlockStatus: UpdateSiteBlockStatus = (
+  setIsBreakAllowed,
+  setBlockedStatus
 ) => {
   chrome.storage.sync.get(
     ["breakEndTime", "nextValidBreakTime"],
@@ -33,13 +37,15 @@ export const updateSiteBlockStatus = (
       setIsBreakAllowed(isBreakAllowed);
     }
   );
-  return;
 };
 
-// RUNS EVERY SECOND, RUNS THE "COUNTDOWN"
-export const updateBreakCountdown = (
-  interval: any,
-  setTimeLeftInSeconds: any
+type UpdateBreakCountdown = (
+  interval: NodeJS.Timer,
+  setTimeLeftInSeconds: Dispatch<SetStateAction<number>>
+) => void;
+export const updateBreakCountdown: UpdateBreakCountdown = (
+  interval,
+  setTimeLeftInSeconds
 ) => {
   chrome.storage.sync.get("breakEndTime", ({ breakEndTime }) => {
     let currentTime: number = new Date().getTime();
@@ -50,10 +56,8 @@ export const updateBreakCountdown = (
     if (currentBreakTimeLeftInSeconds <= 0) {
       setTimeLeftInSeconds(0);
       clearInterval(interval);
-      //TODO: bubble up "break end" to FocusTunnel
     } else {
       setTimeLeftInSeconds(currentBreakTimeLeftInSeconds);
     }
   });
-  return;
 };
