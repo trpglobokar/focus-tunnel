@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { startNewBreakCountdown } from "./utils/actions";
 import { updateSiteBlockStatus } from "./utils/intervals";
 import { SITE_STATUS } from "./utils/types";
 import { getIsBlockerVisible } from "./utils/utils";
 
+import { BreakButton } from "./BreakButton";
 import { BreakCountdown } from "./BreakCountdown";
+
 import { getFocusTunnelStyles } from "./FocusTunnel.styles";
 
 export const FocusTunnel = () => {
@@ -24,22 +25,15 @@ export const FocusTunnel = () => {
     }, 5000);
     return () => clearInterval(timer);
   }), [setIsBreakAllowed, setBlockedStatus];
-  
-  //FUNCTION FOR TAKE-A-BREAK BUTTON
-  const triggerBreak = () => {
-    startNewBreakCountdown();
-    updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus);
-  }
-
-  const breakButton = isBreakAllowed ?
-    <button onClick={triggerBreak}>Take a Break</button>
-    : null;
 
   return (
     <>
       <div style={focusTunnelStyles}>
         <div>{blockedStatus}</div>
-        {breakButton}
+        <BreakButton
+          isBreakAllowed={isBreakAllowed}
+          triggerUpdateSiteBlockStatus={() => updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus)}
+        />
       </div>
       <BreakCountdown isActive={blockedStatus == SITE_STATUS.OnBreak} />
     </>

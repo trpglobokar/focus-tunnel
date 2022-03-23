@@ -18,11 +18,9 @@ export const BreakCountdown: FC<BreakCountdownProps> = ({ isActive }) => {
     return () => clearInterval(interval);
   }, [isActive, setTimeLeftInSeconds]);
 
-  return isActive ?
-    (
-      <div style={breakCountdownStyles}>
-        <div>{formatTimeToString(timeLeftInSeconds)}</div>
-      </div>
-    ) :
-    null;
+  return isActive ? (
+    <div style={breakCountdownStyles}>
+      <div>{formatTimeToString(timeLeftInSeconds)}</div>
+    </div>
+    ) : null;
 };

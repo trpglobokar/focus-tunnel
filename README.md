@@ -18,6 +18,7 @@ Load `dist` directory
 `npx jest` or `npm run test`
 
 ## Next ToDo's:
- - focus button (i.e. click, block after 2min(?) warning, keep blocked for 20min)
- - figure out youtube focus music?
  - put blockedSiteHours into user defined storage (w/ defaults?), editable w/in app
+ - account for holidays (part of above?)
+ - focus button (i.e. click, block after X minutes of warning, keep blocked for Y minutes of custom defined focus time)
+ - figure out youtube focus music?
