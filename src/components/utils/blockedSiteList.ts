@@ -74,7 +74,7 @@ const oregonFocusTest: BlockedSite = {
   stretchBreakTime: 60,
 };
 
-export const blockedSites: BlockedSite[] = [
+export const defaultBlockedSites: BlockedSite[] = [
   reddit,
   nytimes,
   youtube,

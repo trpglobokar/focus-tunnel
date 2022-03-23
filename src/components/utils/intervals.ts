@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { blockSiteBody } from "./actions";
 import { SITE_STATUS } from "./types";
 import {
+  getBlockedSiteByName,
   getBreakTimeLeftInSeconds,
   getIsFocusHour,
   getIsStretchBreak,
@@ -16,19 +17,20 @@ export const updateSiteBlockStatus: UpdateSiteBlockStatus = (
   setBlockedStatus
 ) => {
   chrome.storage.sync.get(
-    ["breakEndTime", "nextValidBreakTime"],
-    ({ breakEndTime, nextValidBreakTime }) => {
-      let currentDate: Date = new Date();
-      let currentTime = currentDate.getTime();
+    ["blockedSites", "breakEndTime", "nextValidBreakTime"],
+    ({ blockedSites, breakEndTime, nextValidBreakTime }) => {
+      const siteName = window.location.hostname;
+      const currentDate: Date = new Date();
+      const blockedSite = getBlockedSiteByName(blockedSites, siteName);
 
-      let isBreakAllowed = nextValidBreakTime < currentTime;
+      let isBreakAllowed = nextValidBreakTime < currentDate.getTime();
       let blockedStatus = SITE_STATUS.TotallyFree;
 
-      if (breakEndTime - currentTime > 0) {
+      if (breakEndTime - currentDate.getTime() > 0) {
         blockedStatus = SITE_STATUS.OnBreak;
-      } else if (getIsFocusHour(currentDate)) {
+      } else if (getIsFocusHour(blockedSite, currentDate)) {
         blockedStatus = SITE_STATUS.FocusBlocked;
-      } else if (getIsStretchBreak(currentDate)) {
+      } else if (getIsStretchBreak(blockedSite, currentDate)) {
         blockedStatus = SITE_STATUS.StretchBlocked;
         isBreakAllowed = false;
       }
