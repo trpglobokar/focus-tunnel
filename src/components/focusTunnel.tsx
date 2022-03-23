@@ -24,7 +24,8 @@ export const FocusTunnel = () => {
       updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus);
     }, 5000);
     return () => clearInterval(timer);
-  }), [setIsBreakAllowed, setBlockedStatus];
+  }),
+    [setIsBreakAllowed, setBlockedStatus];
 
   return (
     <>
@@ -32,7 +33,9 @@ export const FocusTunnel = () => {
         <div>{blockedStatus}</div>
         <BreakButton
           isBreakAllowed={isBreakAllowed}
-          triggerUpdateSiteBlockStatus={() => updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus)}
+          triggerUpdateSiteBlockStatus={() =>
+            updateSiteBlockStatus(setIsBreakAllowed, setBlockedStatus)
+          }
         />
       </div>
       <BreakCountdown isActive={blockedStatus == SITE_STATUS.OnBreak} />
@@ -40,9 +43,10 @@ export const FocusTunnel = () => {
   );
 };
 
-export const renderFocusTunnel = () => ReactDOM.render(
-  <React.StrictMode>
-    <FocusTunnel />
-  </React.StrictMode>,
-  document.getElementById('focus-tunnel')
-);
+export const renderFocusTunnel = () =>
+  ReactDOM.render(
+    <React.StrictMode>
+      <FocusTunnel />
+    </React.StrictMode>,
+    document.getElementById("focus-tunnel")
+  );

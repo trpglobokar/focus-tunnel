@@ -13,7 +13,7 @@ export const BreakCountdown: FC<BreakCountdownProps> = ({ isActive }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      updateBreakCountdown(interval, setTimeLeftInSeconds)
+      updateBreakCountdown(interval, setTimeLeftInSeconds);
     }, 1000);
     return () => clearInterval(interval);
   }, [isActive, setTimeLeftInSeconds]);
@@ -22,5 +22,5 @@ export const BreakCountdown: FC<BreakCountdownProps> = ({ isActive }) => {
     <div style={breakCountdownStyles}>
       <div>{formatTimeToString(timeLeftInSeconds)}</div>
     </div>
-    ) : null;
+  ) : null;
 };

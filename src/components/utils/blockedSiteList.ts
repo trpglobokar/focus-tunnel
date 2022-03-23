@@ -1,10 +1,11 @@
-export interface BlockedSite { //TODO: make blockedSites an array
+export interface BlockedSite {
+  //TODO: make blockedSites an array
   siteName: string;
   focusHours: number[][];
   stretchBreakTime: number;
 }
 export const blockedSites: any = {
-  'www.reddit.com': {
+  "www.reddit.com": {
     focusHours: [
       [0, 1, 2, 23],
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17, 19, 20, 21, 23],
@@ -12,11 +13,11 @@ export const blockedSites: any = {
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17, 23],
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17, 23],
       [0, 1, 2, 3, 9, 11, 13, 14, 15, 16, 17, 23],
-      [0, 1, 2, 23]
+      [0, 1, 2, 23],
     ],
-    stretchBreakTime: 49
+    stretchBreakTime: 49,
   },
-  'www.nytimes.com': {
+  "www.nytimes.com": {
     focusHours: [
       [0, 1, 2, 21],
       [0, 1, 2, 3, 9, 10, 13, 14, 15, 16, 17],
@@ -24,11 +25,11 @@ export const blockedSites: any = {
       [0, 1, 2, 3, 9, 10, 13, 14, 15, 16, 17, 23],
       [0, 1, 2, 3, 9, 10, 13, 14, 15, 16, 17],
       [0, 1, 2, 3, 9, 13, 14, 15, 16, 17],
-      [0, 1, 2]
+      [0, 1, 2],
     ],
-    stretchBreakTime: 49
+    stretchBreakTime: 49,
   },
-  'www.youtube.com': {
+  "www.youtube.com": {
     focusHours: [
       [0, 1, 2],
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17],
@@ -36,11 +37,11 @@ export const blockedSites: any = {
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17],
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17],
       [0, 1, 2, 3, 9, 10, 11, 13, 14, 15, 16, 17],
-      [0, 1, 2]
+      [0, 1, 2],
     ],
-    stretchBreakTime: 60
+    stretchBreakTime: 60,
   },
-  'www.w3schools.com': {
+  "www.w3schools.com": {
     focusHours: [
       [0, 1, 2],
       [23, 0, 1, 2],
@@ -48,11 +49,11 @@ export const blockedSites: any = {
       [0, 1, 2],
       [0, 1, 2],
       [0, 1, 2],
-      [0, 1, 2]
+      [0, 1, 2],
     ],
     stretchBreakTime: 5,
   },
-  'www.oregonlive.com': {
+  "www.oregonlive.com": {
     focusHours: [
       [0, 1, 2, 3, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
       [0, 1, 2, 3, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
@@ -62,6 +63,6 @@ export const blockedSites: any = {
       [0, 1, 2, 3, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
       [0, 1, 2, 3, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
     ],
-    stretchBreakTime: 60
-  }
+    stretchBreakTime: 60,
+  },
 };
