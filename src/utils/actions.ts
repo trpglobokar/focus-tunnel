@@ -1,4 +1,8 @@
-import { SITE_STATUS } from "./types";
+import {
+  BREAK_LENGTH_IN_MINUTES,
+  NEXT_BREAK_TIME_IN_MINUTES,
+  SITE_STATUS,
+} from "./types";
 import { getIsBlockerVisible } from "./utils";
 
 type BlockSiteBody = (blockedStatus: SITE_STATUS) => void;
@@ -11,9 +15,6 @@ export const blockSiteBody: BlockSiteBody = (blockedStatus) => {
 };
 
 export const startNewBreakCountdown = () => {
-  const BREAK_LENGTH_IN_MINUTES = 5;
-  const NEXT_BREAK_TIME_IN_MINUTES = 60;
-
   const currentTime = new Date().getTime();
   const breakEndTime = currentTime + BREAK_LENGTH_IN_MINUTES * 60000;
   const nextValidBreakTime = currentTime + NEXT_BREAK_TIME_IN_MINUTES * 60000;

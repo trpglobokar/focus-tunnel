@@ -1,5 +1,4 @@
-import { BlockedSite } from "./blockedSiteList";
-import { SITE_STATUS } from "./types";
+import { BlockedSite, SITE_STATUS } from "./types";
 
 type GetBreakTimeLeftInSeconds = (breakEndTime: number) => number;
 export const getBreakTimeLeftInSeconds: GetBreakTimeLeftInSeconds = (

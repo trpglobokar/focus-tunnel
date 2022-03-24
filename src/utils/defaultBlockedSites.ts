@@ -1,8 +1,4 @@
-export interface BlockedSite {
-  siteName: string;
-  focusHours: number[][];
-  stretchBreakTime: number;
-}
+import { BlockedSite } from "./types";
 
 const reddit: BlockedSite = {
   siteName: "www.reddit.com",

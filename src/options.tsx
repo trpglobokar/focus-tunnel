@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { BlockedSite } from "./utils/blockedSiteList";
+import { BlockedSite, WEEKDAYS } from "./utils/types";
 
 //TODO: allow users to customize blocked sites & times here
-
-const WEEK_DAYS = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
 
 const formatFocusHours = (focusHours: number[][]) => {
   const listForm = focusHours.map((day, index) => (
     <li key={index}>
-      {WEEK_DAYS[index]}: {day.join(",")}
+      {WEEKDAYS[index]}: {day.join(",")}
     </li>
   ));
 
