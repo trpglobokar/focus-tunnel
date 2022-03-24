@@ -1,14 +1,19 @@
 import React, { FC } from "react";
-import { BlockedSite, WEEKDAYS } from "../../utils/types";
+import { BlockedSite, HOURS, WEEKDAYS } from "../../utils/types";
 
 const formatFocusHours = (focusHours: number[][]) => {
-  const listForm = focusHours.map((day, index) => (
-    <li key={index}>
-      {WEEKDAYS[index]}: {day.join(",")}
-    </li>
+  return focusHours.map((day, index) => (
+    <tr>
+      <td>{WEEKDAYS[index]}</td>
+      {HOURS.map((_hour, hourIndex) => {
+        const blockedStatus = day.includes(hourIndex) ? "X" : "O";
+        const backgroundStyle = day.includes(hourIndex) ? "#d85a5a" : "#afd7af";
+        return (
+          <td style={{ backgroundColor: backgroundStyle }}>{blockedStatus}</td>
+        );
+      })}
+    </tr>
   ));
-
-  return <ul>{listForm}</ul>;
 };
 
 interface BlockedSiteListItemProps {
@@ -19,7 +24,15 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
     <li key={site.siteName}>
       {site.siteName}
       <br />
-      {formatFocusHours(site.focusHours)}
+      <table>
+        <tr>
+          <th>Day</th>
+          {HOURS.map((hour) => (
+            <td>{hour}</td>
+          ))}
+        </tr>
+        {formatFocusHours(site.focusHours)}
+      </table>
     </li>
   );
 };
