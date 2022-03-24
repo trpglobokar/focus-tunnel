@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { BlockedSiteListItem } from "./components/BlockedSiteListItem";
+import { BlockedSiteListItem } from "./components/options/BlockedSiteListItem";
 import { BlockedSite } from "./utils/types";
 
 const Options = () => {

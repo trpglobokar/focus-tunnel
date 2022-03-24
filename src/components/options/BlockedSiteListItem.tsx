@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { BlockedSite, WEEKDAYS } from "../utils/types";
+import { BlockedSite, WEEKDAYS } from "../../utils/types";
 
 const formatFocusHours = (focusHours: number[][]) => {
   const listForm = focusHours.map((day, index) => (

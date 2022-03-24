@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { updateSiteBlockStatus } from "../utils/intervals";
-import { SITE_STATUS } from "../utils/types";
-import { getIsBlockerVisible } from "../utils/utils";
+import { updateSiteBlockStatus } from "../../utils/intervals";
+import { SITE_STATUS } from "../../utils/types";
+import { getIsBlockerVisible } from "../../utils/utils";
 
 import { BreakButton } from "./BreakButton";
 import { BreakCountdown } from "./BreakCountdown";
