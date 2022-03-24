@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { BlockedSite, WEEKDAYS } from "./utils/types";
-
-//TODO: allow users to customize blocked sites & times here
-
-const formatFocusHours = (focusHours: number[][]) => {
-  const listForm = focusHours.map((day, index) => (
-    <li key={index}>
-      {WEEKDAYS[index]}: {day.join(",")}
-    </li>
-  ));
-
-  return <ul>{listForm}</ul>;
-};
+import { BlockedSiteListItem } from "./components/BlockedSiteListItem";
+import { BlockedSite } from "./utils/types";
 
 const Options = () => {
   const [blockedSites, setBlockedSites] = useState<BlockedSite[]>([]);
@@ -44,11 +33,7 @@ const Options = () => {
   const SaveButton = <button onClick={saveOptions}>Save</button>;
 
   const BlockedSiteList = blockedSites.map((site) => (
-    <li key={site.siteName}>
-      {site.siteName}
-      <br />
-      {formatFocusHours(site.focusHours)}
-    </li>
+    <BlockedSiteListItem site={site} />
   ));
 
   return (
