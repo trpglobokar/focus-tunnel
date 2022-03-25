@@ -6,15 +6,15 @@ import { buttonStyles } from "./Button.styles";
 
 interface OptionsButtonProps {
   readonly label: string;
-  readonly displayMode: OptionButtonDisplayMode;
   readonly handleClick: () => void;
-  readonly isInEditMode: boolean;
+  readonly displayMode?: OptionButtonDisplayMode;
+  readonly isInEditMode?: boolean;
 }
 export const OptionsButton: FC<OptionsButtonProps> = ({
   label,
-  displayMode,
   handleClick,
-  isInEditMode,
+  displayMode = OptionButtonDisplayMode.Always,
+  isInEditMode = false,
 }) => {
   const optionsButton = (
     <button css={buttonStyles} onClick={() => handleClick()}>
