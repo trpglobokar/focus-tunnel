@@ -35,7 +35,12 @@ export const BlockedSiteList: FC = () => {
         />
       </h3>
       {blockedSites.map((site) => (
-        <BlockedSiteListItem site={site} />
+        <BlockedSiteListItem
+          site={site}
+          handleStorageSave={(newBlockedSites: BlockedSite[]) =>
+            setBlockedSites(newBlockedSites)
+          }
+        />
       ))}
     </div>
   );

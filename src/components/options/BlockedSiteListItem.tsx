@@ -11,9 +11,12 @@ import { OptionsButton } from "./OptionsButton";
 
 interface BlockedSiteListItemProps {
   readonly site: BlockedSite;
+  readonly handleStorageSave: (newBlockedSites: BlockedSite[]) => void;
 }
-export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
-  const [isDeleted, setIsDeleted] = useState(false); //TODO: have true update from parent element
+export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
+  site,
+  handleStorageSave,
+}) => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [tempSiteName, setTempSiteName] = useState(site.siteName);
   const [tempFocusHours, setTempFocusHours] = useState(site.focusHours);
@@ -23,11 +26,14 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
       const newBlockedSites: BlockedSite[] = blockedSites.filter(
         (storedSite: BlockedSite) => storedSite.siteName !== site.siteName
       );
-      chrome.storage.sync.set({
-        blockedSites: newBlockedSites,
-      });
-
-      setIsDeleted(true);
+      chrome.storage.sync.set(
+        {
+          blockedSites: newBlockedSites,
+        },
+        () => {
+          handleStorageSave(newBlockedSites);
+        }
+      );
     });
   };
 
@@ -43,17 +49,17 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
               }
             : storedSite
       );
-      chrome.storage.sync.set({
-        blockedSites: newBlockedSites,
-      });
-
-      setIsInEditMode(false);
+      chrome.storage.sync.set(
+        {
+          blockedSites: newBlockedSites,
+        },
+        () => {
+          setIsInEditMode(false);
+          handleStorageSave(newBlockedSites);
+        }
+      );
     });
   };
-
-  if (isDeleted) {
-    return null;
-  }
 
   return (
     <li css={listStyles} key={site.siteName}>
