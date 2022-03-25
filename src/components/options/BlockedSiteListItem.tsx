@@ -87,7 +87,19 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
         <OptionsButton
           label="Edit"
           displayMode={OptionButtonDisplayMode.ViewOnly}
-          handleClick={() => setIsInEditMode(true)}
+          handleClick={() => {
+            setIsInEditMode(true);
+          }}
+          isInEditMode={isInEditMode}
+        />
+        <OptionsButton
+          label="Cancel"
+          displayMode={OptionButtonDisplayMode.EditOnly}
+          handleClick={() => {
+            setTempSiteName(site.siteName);
+            setTempFocusHours(site.focusHours);
+            setIsInEditMode(false);
+          }}
           isInEditMode={isInEditMode}
         />
         <OptionsButton
