@@ -61,14 +61,18 @@ export const FocusHoursTable: FC<FocusHoursTableProps> = ({
   const tableStyles = getTableStyles(isInEditMode);
 
   return (
-    <table css={tableStyles}>
-      <tr>
-        <th>Day</th>
-        {HOURS.map((hour) => (
-          <td>{hour}</td>
-        ))}
-      </tr>
-      {formatFocusHours(focusHours, handleFocusHourChange, isInEditMode)}
-    </table>
+    <div>
+      <label>Blocked Hours:</label>
+      <br />
+      <table css={tableStyles}>
+        <tr>
+          <th>Day</th>
+          {HOURS.map((hour) => (
+            <td>{hour}</td>
+          ))}
+        </tr>
+        {formatFocusHours(focusHours, handleFocusHourChange, isInEditMode)}
+      </table>
+    </div>
   );
 };

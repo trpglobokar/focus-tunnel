@@ -1,4 +1,7 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React, { FC } from "react";
+import { buttonStyles } from "./Button.styles";
 
 interface SaveButtonProps {
   readonly isInEditMode: boolean;
@@ -9,6 +12,8 @@ export const SaveButton: FC<SaveButtonProps> = ({
   handleSaveClick,
 }) => {
   return isInEditMode ? (
-    <button onClick={() => handleSaveClick()}>Save</button>
+    <button css={buttonStyles} onClick={() => handleSaveClick()}>
+      Save
+    </button>
   ) : null;
 };

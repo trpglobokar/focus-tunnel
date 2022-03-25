@@ -11,6 +11,7 @@ export const getTableStyles: GetTableStyles = (isInEditMode) => {
     fontSize: isInEditMode ? "12px" : "6px",
     borderSpacing: 0,
     marginBottom: "4px",
+    marginLeft: "12px",
     ":hover": {
       cursor: isInEditMode ? "pointer" : "initial",
     },

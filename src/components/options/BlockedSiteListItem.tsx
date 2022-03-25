@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React, { ChangeEvent, FC, useState } from "react";
 import { BlockedSite } from "../../utils/types";
 
@@ -5,6 +7,8 @@ import { SiteName } from "./SiteName";
 import { EditButton } from "./EditButton";
 import { FocusHoursTable } from "./FocusHoursTable";
 import { SaveButton } from "./SaveButton";
+
+import { buttonWrapperStyles, listStyles } from "./BlockedSiteListItem.styles";
 
 interface BlockedSiteListItemProps {
   readonly site: BlockedSite;
@@ -39,7 +43,7 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
   };
 
   return (
-    <li key={site.siteName}>
+    <li css={listStyles} key={site.siteName}>
       <SiteName
         isInEditMode={isInEditMode}
         siteName={tempSiteName}
@@ -54,15 +58,17 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
           setTempFocusHours(newFocusHours);
         }}
       />
-      <EditButton
-        handleEditClick={() => {
-          setIsInEditMode(true);
-        }}
-      />
-      <SaveButton
-        isInEditMode={isInEditMode}
-        handleSaveClick={handleSaveClick}
-      />
+      <div css={buttonWrapperStyles}>
+        <SaveButton
+          isInEditMode={isInEditMode}
+          handleSaveClick={handleSaveClick}
+        />
+        <EditButton
+          handleEditClick={() => {
+            setIsInEditMode(true);
+          }}
+        />
+      </div>
     </li>
   );
 };

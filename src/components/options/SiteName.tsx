@@ -12,7 +12,7 @@ export const SiteName: FC<SiteNameProps> = ({
 }) => {
   return (
     <div>
-      <label>Site Name:</label>
+      <label>Site Name: </label>
       {isInEditMode ? (
         <input type="text" value={siteName} onChange={handleOnSiteNameChange} />
       ) : (

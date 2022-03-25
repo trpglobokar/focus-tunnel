@@ -1,6 +1,9 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { BlockedSiteListItem } from "./components/options/BlockedSiteListItem";
+import { headerStyles, rootStyles } from "./options.styles";
 import { BlockedSite } from "./utils/types";
 
 const Options = () => {
@@ -37,8 +40,8 @@ const Options = () => {
   ));
 
   return (
-    <div style={{ width: "600px" }}>
-      <div>Blocked Sites:</div>
+    <div css={rootStyles}>
+      <div css={headerStyles}>Blocked Sites:</div>
       {BlockedSiteList}
       <div>{status}</div>
     </div>
