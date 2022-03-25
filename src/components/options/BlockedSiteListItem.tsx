@@ -34,17 +34,14 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
   const handleSaveClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
       const newBlockedSites: BlockedSite[] = blockedSites.map(
-        (storedSite: BlockedSite) => {
-          if (storedSite.siteName === site.siteName) {
-            const newBlockedSite: BlockedSite = {
-              siteName: tempSiteName,
-              focusHours: tempFocusHours,
-              stretchBreakTime: storedSite.stretchBreakTime,
-            };
-            return newBlockedSite;
-          }
-          return storedSite;
-        }
+        (storedSite: BlockedSite) =>
+          storedSite.siteName === site.siteName
+            ? {
+                siteName: tempSiteName,
+                focusHours: tempFocusHours,
+                stretchBreakTime: storedSite.stretchBreakTime,
+              }
+            : storedSite
       );
       chrome.storage.sync.set({
         blockedSites: newBlockedSites,
