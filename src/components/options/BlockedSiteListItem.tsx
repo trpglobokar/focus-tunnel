@@ -1,5 +1,7 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { BlockedSite } from "../../utils/types";
+
+import { SiteName } from "./SiteName";
 import { EditButton } from "./EditButton";
 import { FocusHoursTable } from "./FocusHoursTable";
 import { SaveButton } from "./SaveButton";
@@ -10,10 +12,6 @@ interface BlockedSiteListItemProps {
 export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [tempSiteName, setTempSiteName] = useState(site.siteName);
-
-  const handleEditClick = () => {
-    setIsInEditMode(true);
-  };
 
   const handleSaveClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
@@ -39,26 +37,21 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
     });
   };
 
-  const onSiteNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTempSiteName(e.target.value);
-  };
-
-  const SiteNameDisplay = isInEditMode ? (
-    <input
-      type="text"
-      value={tempSiteName}
-      onChange={(e) => onSiteNameInputChange(e)}
-    />
-  ) : (
-    <span>{tempSiteName}</span>
-  );
-
   return (
     <li key={site.siteName}>
-      <label>Site Name:</label> {SiteNameDisplay}
-      <br />
+      <SiteName
+        isInEditMode={isInEditMode}
+        siteName={tempSiteName}
+        handleOnSiteNameChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setTempSiteName(e.target.value)
+        }
+      />
       <FocusHoursTable focusHours={site.focusHours} />
-      <EditButton handleEditClick={handleEditClick} />
+      <EditButton
+        handleEditClick={() => {
+          setIsInEditMode(true);
+        }}
+      />
       <SaveButton handleSaveClick={handleSaveClick} />
     </li>
   );
