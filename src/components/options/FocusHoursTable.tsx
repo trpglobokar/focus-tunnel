@@ -1,16 +1,17 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React, { FC } from "react";
 import { HOURS, WEEKDAYS } from "../../utils/types";
+
+import { getTableStyles } from "./FocusHoursTable.styles";
 
 const formatFocusHours = (focusHours: number[][]) => {
   return focusHours.map((day, index) => (
     <tr>
       <td>{WEEKDAYS[index]}</td>
       {HOURS.map((_hour, hourIndex) => {
-        const blockedStatus = day.includes(hourIndex) ? "X" : "O";
-        const backgroundStyle = day.includes(hourIndex) ? "#d85a5a" : "#afd7af";
-        return (
-          <td style={{ backgroundColor: backgroundStyle }}>{blockedStatus}</td>
-        );
+        const isBlocked = day.includes(hourIndex);
+        return <td data-isBlocked={isBlocked} />;
       })}
     </tr>
   ));
@@ -18,10 +19,16 @@ const formatFocusHours = (focusHours: number[][]) => {
 
 interface FocusHoursTableProps {
   readonly focusHours: number[][];
+  readonly isInEditMode: boolean;
 }
-export const FocusHoursTable: FC<FocusHoursTableProps> = ({ focusHours }) => {
+export const FocusHoursTable: FC<FocusHoursTableProps> = ({
+  focusHours,
+  isInEditMode,
+}) => {
+  const tableStyles = getTableStyles(isInEditMode);
+
   return (
-    <table>
+    <table css={tableStyles}>
       <tr>
         <th>Day</th>
         {HOURS.map((hour) => (

@@ -37,11 +37,11 @@ const Options = () => {
   ));
 
   return (
-    <>
+    <div style={{ width: "600px" }}>
       <div>Blocked Sites:</div>
       {BlockedSiteList}
       <div>{status}</div>
-    </>
+    </div>
   );
 };
 

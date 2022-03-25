@@ -46,13 +46,19 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
           setTempSiteName(e.target.value)
         }
       />
-      <FocusHoursTable focusHours={site.focusHours} />
+      <FocusHoursTable
+        isInEditMode={isInEditMode}
+        focusHours={site.focusHours}
+      />
       <EditButton
         handleEditClick={() => {
           setIsInEditMode(true);
         }}
       />
-      <SaveButton handleSaveClick={handleSaveClick} />
+      <SaveButton
+        isInEditMode={isInEditMode}
+        handleSaveClick={handleSaveClick}
+      />
     </li>
   );
 };
