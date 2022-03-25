@@ -78,6 +78,7 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
           setTempFocusHours(newFocusHours);
         }}
       />
+      <div>Stretch Break: XX:{site.stretchBreakTime - 1} - XX:59</div>
       <div css={buttonWrapperStyles}>
         <OptionsButton
           label="Save"
