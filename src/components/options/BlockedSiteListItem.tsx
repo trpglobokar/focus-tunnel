@@ -12,6 +12,7 @@ interface BlockedSiteListItemProps {
 export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [tempSiteName, setTempSiteName] = useState(site.siteName);
+  const [tempFocusHours, setTempFocusHours] = useState(site.focusHours);
 
   const handleSaveClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
@@ -20,7 +21,7 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
           if (storedSite.siteName === site.siteName) {
             const newBlockedSite: BlockedSite = {
               siteName: tempSiteName,
-              focusHours: storedSite.focusHours,
+              focusHours: tempFocusHours,
               stretchBreakTime: storedSite.stretchBreakTime,
             };
             return newBlockedSite;
@@ -48,7 +49,10 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
       />
       <FocusHoursTable
         isInEditMode={isInEditMode}
-        focusHours={site.focusHours}
+        focusHours={tempFocusHours}
+        handleFocusHourChange={(newFocusHours) => {
+          setTempFocusHours(newFocusHours);
+        }}
       />
       <EditButton
         handleEditClick={() => {

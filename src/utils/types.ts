@@ -1,6 +1,7 @@
+export type FocusHours = boolean[][];
 export interface BlockedSite {
   siteName: string;
-  focusHours: number[][];
+  focusHours: FocusHours;
   stretchBreakTime: number;
 }
 

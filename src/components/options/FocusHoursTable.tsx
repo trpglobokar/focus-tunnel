@@ -1,29 +1,62 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { FC } from "react";
-import { HOURS, WEEKDAYS } from "../../utils/types";
+import { FocusHours, HOURS, WEEKDAYS } from "../../utils/types";
 
 import { getTableStyles } from "./FocusHoursTable.styles";
 
-const formatFocusHours = (focusHours: number[][]) => {
-  return focusHours.map((day, index) => (
+const generateNewFocusHours = (
+  focusHours: FocusHours,
+  updatedDay: number,
+  updatedHour: number
+) => {
+  return focusHours.map((day, dayIndex) => {
+    if (dayIndex === updatedDay) {
+      let newDay = [...day];
+      newDay[updatedHour] = !newDay[updatedHour];
+      return newDay;
+    }
+    return day;
+  });
+};
+
+const formatFocusHours = (
+  focusHours: FocusHours,
+  handleFocusHourChange: (newFocusHours: FocusHours) => void,
+  isInEditMode: boolean
+) => {
+  return focusHours.map((day, dayIndex) => (
     <tr>
-      <td>{WEEKDAYS[index]}</td>
+      <td>{WEEKDAYS[dayIndex]}</td>
       {HOURS.map((_hour, hourIndex) => {
-        const isBlocked = day.includes(hourIndex);
-        return <td data-isBlocked={isBlocked} />;
+        const isBlocked = day[hourIndex];
+
+        const onClickTD = isInEditMode
+          ? () => {
+              const newFocusHours = generateNewFocusHours(
+                focusHours,
+                dayIndex,
+                hourIndex
+              );
+              handleFocusHourChange(newFocusHours);
+            }
+          : undefined;
+
+        return <td data-isBlocked={isBlocked} onClick={onClickTD} />;
       })}
     </tr>
   ));
 };
 
 interface FocusHoursTableProps {
-  readonly focusHours: number[][];
+  readonly focusHours: FocusHours;
   readonly isInEditMode: boolean;
+  readonly handleFocusHourChange: (newFocusHours: FocusHours) => void;
 }
 export const FocusHoursTable: FC<FocusHoursTableProps> = ({
   focusHours,
   isInEditMode,
+  handleFocusHourChange,
 }) => {
   const tableStyles = getTableStyles(isInEditMode);
 
@@ -35,7 +68,7 @@ export const FocusHoursTable: FC<FocusHoursTableProps> = ({
           <td>{hour}</td>
         ))}
       </tr>
-      {formatFocusHours(focusHours)}
+      {formatFocusHours(focusHours, handleFocusHourChange, isInEditMode)}
     </table>
   );
 };

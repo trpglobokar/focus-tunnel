@@ -23,7 +23,7 @@ export const getIsFocusHour: GetIsFocusHour = (blockedSite, currentDate) => {
 
   return !blockedSite
     ? false
-    : blockedSite.focusHours[currentDay].includes(currentDate.getHours());
+    : blockedSite.focusHours[currentDay][currentDate.getHours()];
 };
 
 type GetIsStretchBreak = (
