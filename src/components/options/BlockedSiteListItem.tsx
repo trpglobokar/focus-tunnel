@@ -1,22 +1,35 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { ChangeEvent, FC, useState } from "react";
-import { BlockedSite } from "../../utils/types";
+import { BlockedSite, OptionButtonDisplayMode } from "../../utils/types";
 
 import { SiteName } from "./SiteName";
-import { EditButton } from "./EditButton";
 import { FocusHoursTable } from "./FocusHoursTable";
-import { SaveButton } from "./SaveButton";
 
 import { buttonWrapperStyles, listStyles } from "./BlockedSiteListItem.styles";
+import { OptionsButton } from "./OptionsButton";
 
 interface BlockedSiteListItemProps {
   readonly site: BlockedSite;
 }
 export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
+  const [isDeleted, setIsDeleted] = useState(false); //TODO: have true update from parent element
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [tempSiteName, setTempSiteName] = useState(site.siteName);
   const [tempFocusHours, setTempFocusHours] = useState(site.focusHours);
+
+  const handleDeleteClick = () => {
+    chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
+      const newBlockedSites: BlockedSite[] = blockedSites.filter(
+        (storedSite: BlockedSite) => storedSite.siteName !== site.siteName
+      );
+      chrome.storage.sync.set({
+        blockedSites: newBlockedSites,
+      });
+
+      setIsDeleted(true);
+    });
+  };
 
   const handleSaveClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
@@ -33,7 +46,6 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
           return storedSite;
         }
       );
-
       chrome.storage.sync.set({
         blockedSites: newBlockedSites,
       });
@@ -41,6 +53,10 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
       setIsInEditMode(false);
     });
   };
+
+  if (isDeleted) {
+    return null;
+  }
 
   return (
     <li css={listStyles} key={site.siteName}>
@@ -59,14 +75,23 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({ site }) => {
         }}
       />
       <div css={buttonWrapperStyles}>
-        <SaveButton
+        <OptionsButton
+          label="Save"
+          displayMode={OptionButtonDisplayMode.EditOnly}
+          handleClick={handleSaveClick}
           isInEditMode={isInEditMode}
-          handleSaveClick={handleSaveClick}
         />
-        <EditButton
-          handleEditClick={() => {
-            setIsInEditMode(true);
-          }}
+        <OptionsButton
+          label="Edit"
+          displayMode={OptionButtonDisplayMode.ViewOnly}
+          handleClick={() => setIsInEditMode(true)}
+          isInEditMode={isInEditMode}
+        />
+        <OptionsButton
+          label="Delete"
+          displayMode={OptionButtonDisplayMode.Always}
+          handleClick={handleDeleteClick}
+          isInEditMode={isInEditMode}
         />
       </div>
     </li>

@@ -15,6 +15,11 @@ export enum SITE_STATUS {
   StretchBlocked = "Go Stretch",
   TotallyFree = "Suppity Duppity",
 }
+export enum OptionButtonDisplayMode {
+  Always,
+  EditOnly,
+  ViewOnly,
+}
 
 export const WEEKDAYS = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
 export const HOURS = [
