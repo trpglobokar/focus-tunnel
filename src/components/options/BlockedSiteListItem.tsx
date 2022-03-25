@@ -24,7 +24,7 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
   const handleDeleteClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
       const newBlockedSites: BlockedSite[] = blockedSites.filter(
-        (storedSite: BlockedSite) => storedSite.siteName !== site.siteName
+        (storedSite: BlockedSite) => storedSite.id !== site.id
       );
       chrome.storage.sync.set(
         {
@@ -39,9 +39,10 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
 
   const handleSaveClick = () => {
     chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
+      //TODO: block against saving of identical site names
       const newBlockedSites: BlockedSite[] = blockedSites.map(
         (storedSite: BlockedSite) =>
-          storedSite.siteName === site.siteName
+          storedSite.id === site.id
             ? {
                 siteName: tempSiteName,
                 focusHours: tempFocusHours,
@@ -62,7 +63,7 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
   };
 
   return (
-    <li css={listStyles} key={site.siteName}>
+    <li css={listStyles} key={site.id}>
       <SiteName
         isInEditMode={isInEditMode}
         siteName={tempSiteName}

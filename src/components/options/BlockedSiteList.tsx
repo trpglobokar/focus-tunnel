@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { defaultNewBlockedSite } from "../../utils/defaultBlockedSites";
+import { generateNewBlockedSite } from "../../utils/defaultBlockedSites";
 import { BlockedSite } from "../../utils/types";
 import { BlockedSiteListItem } from "./BlockedSiteListItem";
 import { OptionsButton } from "./OptionsButton";
@@ -14,7 +14,8 @@ export const BlockedSiteList: FC = () => {
   }, []);
 
   const addNewBlockedSite = () => {
-    const newBlockedSites = [...blockedSites, defaultNewBlockedSite];
+    const newBlockedSite = generateNewBlockedSite();
+    const newBlockedSites = [...blockedSites, newBlockedSite];
     chrome.storage.sync.set(
       {
         blockedSites: newBlockedSites,
