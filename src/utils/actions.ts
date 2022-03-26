@@ -16,11 +16,14 @@ export const blockSiteBody: BlockSiteBody = (blockedStatus) => {
 
 export const startNewBreakCountdown = () => {
   const currentTime = new Date().getTime();
-  const breakEndTime = currentTime + BREAK_LENGTH_IN_MINUTES * 60000;
-  const nextValidBreakTime = currentTime + NEXT_BREAK_TIME_IN_MINUTES * 60000;
 
-  chrome.storage.sync.set({
-    breakEndTime,
-    nextValidBreakTime,
+  chrome.storage.sync.get(["breakLength", "breakGapLength"], ({ breakLength, breakGapLength }) => {
+    const breakEndTime = currentTime + breakLength * 60000;
+    const nextValidBreakTime = currentTime + breakGapLength * 60000;
+
+    chrome.storage.sync.set({
+      breakEndTime,
+      nextValidBreakTime,
+    });
   });
 };
