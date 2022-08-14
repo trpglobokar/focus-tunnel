@@ -11,59 +11,20 @@ import { OptionsButton } from "./OptionsButton";
 
 interface BlockedSiteListItemProps {
   readonly site: BlockedSite;
-  readonly handleStorageSave: (newBlockedSites: BlockedSite[]) => void;
+  readonly handleStorageDelete: (siteId: string) => void;
+  readonly handleStorageSave: (updatedSite: BlockedSite) => void;
 }
 export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
   site,
+  handleStorageDelete,
   handleStorageSave,
 }) => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [tempSiteName, setTempSiteName] = useState(site.siteName);
   const [tempFocusHours, setTempFocusHours] = useState(site.focusHours);
 
-  const handleDeleteClick = () => {
-    chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
-      const newBlockedSites: BlockedSite[] = blockedSites.filter(
-        (storedSite: BlockedSite) => storedSite.id !== site.id
-      );
-      chrome.storage.sync.set(
-        {
-          blockedSites: newBlockedSites,
-        },
-        () => {
-          handleStorageSave(newBlockedSites);
-        }
-      );
-    });
-  };
-
-  const handleSaveClick = () => {
-    chrome.storage.sync.get(["blockedSites"], ({ blockedSites }) => {
-      //TODO: block against saving of identical site names
-      const newBlockedSites: BlockedSite[] = blockedSites.map(
-        (storedSite: BlockedSite) =>
-          storedSite.id === site.id
-            ? {
-                siteName: tempSiteName,
-                focusHours: tempFocusHours,
-                stretchBreakTime: storedSite.stretchBreakTime,
-              }
-            : storedSite
-      );
-      chrome.storage.sync.set(
-        {
-          blockedSites: newBlockedSites,
-        },
-        () => {
-          setIsInEditMode(false);
-          handleStorageSave(newBlockedSites);
-        }
-      );
-    });
-  };
-
   return (
-    <li css={listStyles} key={site.id}>
+    <li css={listStyles}>
       <SiteName
         isInEditMode={isInEditMode}
         siteName={tempSiteName}
@@ -83,7 +44,17 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
         <OptionsButton
           label="Save"
           displayMode={OptionButtonDisplayMode.EditOnly}
-          handleClick={handleSaveClick}
+          handleClick={() => {
+            const updatedSite: BlockedSite = {
+              id: site.id,
+              siteName: tempSiteName,
+              focusHours: tempFocusHours,
+              stretchBreakTime: site.stretchBreakTime,
+            };
+
+            handleStorageSave(updatedSite);
+            setIsInEditMode(false);
+          }}
           isInEditMode={isInEditMode}
         />
         <OptionsButton
@@ -107,7 +78,9 @@ export const BlockedSiteListItem: FC<BlockedSiteListItemProps> = ({
         <OptionsButton
           label="Delete"
           displayMode={OptionButtonDisplayMode.Always}
-          handleClick={handleDeleteClick}
+          handleClick={() => {
+            handleStorageDelete(site.id);
+          }}
           isInEditMode={isInEditMode}
         />
       </div>

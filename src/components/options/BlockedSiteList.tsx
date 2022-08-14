@@ -13,17 +13,21 @@ export const BlockedSiteList: FC = () => {
     });
   }, []);
 
-  const addNewBlockedSite = () => {
-    const newBlockedSite = generateNewBlockedSite();
-    const newBlockedSites = [...blockedSites, newBlockedSite];
+  const syncAndSetBlockedSites = (updatedBlockedSites: BlockedSite[]) => {
     chrome.storage.sync.set(
       {
-        blockedSites: newBlockedSites,
+        blockedSites: updatedBlockedSites,
       },
       () => {
-        setBlockedSites(newBlockedSites);
+        setBlockedSites(updatedBlockedSites);
       }
     );
+  };
+
+  const addNewBlockedSite = () => {
+    const newBlockedSite = generateNewBlockedSite();
+    const updatedBlockedSites = [...blockedSites, newBlockedSite];
+    syncAndSetBlockedSites(updatedBlockedSites);
   };
 
   return (
@@ -35,14 +39,27 @@ export const BlockedSiteList: FC = () => {
           handleClick={addNewBlockedSite}
         />
       </h3>
-      {blockedSites.map((site) => (
-        <BlockedSiteListItem
-          site={site}
-          handleStorageSave={(newBlockedSites: BlockedSite[]) =>
-            setBlockedSites(newBlockedSites)
-          }
-        />
-      ))}
+      <ul>
+        {blockedSites.map((site) => (
+          <BlockedSiteListItem
+            site={site}
+            key={site.id}
+            handleStorageDelete={(deletedSiteId: string) => {
+              const updatedSites = [...blockedSites].filter(
+                (site) => site.id != deletedSiteId
+              );
+              syncAndSetBlockedSites(updatedSites);
+            }}
+            handleStorageSave={(updatedSite: BlockedSite) => {
+              const updatedBlockedSites: BlockedSite[] = blockedSites.map(
+                (storedSite: BlockedSite) =>
+                  storedSite.id === site.id ? updatedSite : storedSite
+              );
+              syncAndSetBlockedSites(updatedBlockedSites);
+            }}
+          />
+        ))}
+      </ul>
     </div>
   );
 };
